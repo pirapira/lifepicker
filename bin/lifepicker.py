@@ -12,3 +12,13 @@ Commands
         If the user starts the activity, after 5 minutes, the command asks
         the user whether the activity was good or bad.
 """
+
+from invoke import task
+
+@task
+def add(c):
+    pass
+
+@task
+def pick(c):
+    pass
