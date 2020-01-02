@@ -13,12 +13,13 @@ Commands
         the user whether the activity was good or bad.
 """
 
-from invoke import task
+import argparse
 
-@task
-def add(c):
-    pass
+parser = argparse.ArgumentParser()
+subparsers = parser.add_subparsers()
 
-@task
-def pick(c):
-    pass
+add_parser = subparsers.add_parser('add')
+pick_parser = subparsers.add_parser('pick')
+
+if __name__ == '__main__':
+    args = parser.parse_args()
