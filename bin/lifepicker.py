@@ -33,4 +33,8 @@ pick_parser.set_defaults(func=pick)
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    args.func()
+    try:
+        args.func()
+    except AttributeError:
+        # When neither 'add' or 'pick' is specified, execute 'pick'
+        pick()
