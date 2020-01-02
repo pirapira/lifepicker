@@ -20,15 +20,20 @@ def add_element(original_list, activity):
     return original_list + [{ "name": activity, "good": 0, "bad": 0 }]
 
 def add(args):
-    print('add')
     new_activity = ' '.join(args.activity)
-    with open(storage, encoding='utf-8') as json_file:
-        current_list = json.load(json_file)
-    with open(storage, 'w', encoding='utf-8') as json_file:
-        new_list = add_element(current_list, new_activity)
-        json.dump(new_list, json_file)
+    current_list = load()
+    new_list = add_element(current_list, new_activity)
+    save(new_list)
 
 storage = Path.home() / Path('lifepicker.json')
+
+def load():
+    with open(storage, encoding='utf-8') as json_file:
+        return json.load(json_file)
+
+def save(activities):
+    with open(storage, 'w', encoding='utf-8') as json_file:
+        json.dump(activities, json_file)
 
 def pick_param(activity):
     from scipy.stats import beta
@@ -41,9 +46,7 @@ def pick_activity(activities):
     return pairs[-1][1]["name"]
 
 def pick(args):
-    print('pick')
-    with open(storage, encoding='utf-8') as json_file:
-        activities = json.load(json_file)
+    activities = load()
     activity = pick_activity(activities)
     print(activity)
     print('do it for five minutes')
@@ -56,13 +59,11 @@ def pick(args):
         record("bad", activity)
 
 def record(label, activity):
-    with open(storage, encoding='utf-8') as json_file:
-        activities = json.load(json_file)
+    activities = load()
     for entry in activities:
         if(entry["name"] == activity):
             entry[label] += 1
-            with open(storage, 'w', encoding='utf-8') as json_file:
-                json.dump(activities, json_file)
+            save(activities)
             return
     raise RuntimeError("activity not found")
 
