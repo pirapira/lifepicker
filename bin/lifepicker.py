@@ -20,7 +20,6 @@ def add_element(original_list, activity):
     return original_list + [{ "name": activity, "good": 0, "bad": 0 }]
 
 def add(args):
-    print('add')
     new_activity = ' '.join(args.activity)
     current_list = load()
     new_list = add_element(current_list, new_activity)
@@ -47,7 +46,6 @@ def pick_activity(activities):
     return pairs[-1][1]["name"]
 
 def pick(args):
-    print('pick')
     activities = load()
     activity = pick_activity(activities)
     print(activity)
