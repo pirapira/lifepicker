@@ -28,8 +28,11 @@ def add(args):
 storage = Path.home() / Path('lifepicker.json')
 
 def load():
-    with open(storage, encoding='utf-8') as json_file:
-        return json.load(json_file)
+    try:
+        with open(storage, encoding='utf-8') as json_file:
+            return json.load(json_file)
+    except FileNotFoundError:
+        return []
 
 def save(activities):
     with open(storage, 'w', encoding='utf-8') as json_file:
