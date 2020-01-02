@@ -23,9 +23,8 @@ def add(args):
     print('add')
     new_activity = ' '.join(args.activity)
     current_list = load()
-    with open(storage, 'w', encoding='utf-8') as json_file:
-        new_list = add_element(current_list, new_activity)
-        json.dump(new_list, json_file)
+    new_list = add_element(current_list, new_activity)
+    save(new_list)
 
 storage = Path.home() / Path('lifepicker.json')
 
@@ -33,6 +32,9 @@ def load():
     with open(storage, encoding='utf-8') as json_file:
         return json.load(json_file)
 
+def save(activities):
+    with open(storage, 'w', encoding='utf-8') as json_file:
+        json.dump(activities, json_file)
 
 def pick_param(activity):
     from scipy.stats import beta
@@ -63,8 +65,7 @@ def record(label, activity):
     for entry in activities:
         if(entry["name"] == activity):
             entry[label] += 1
-            with open(storage, 'w', encoding='utf-8') as json_file:
-                json.dump(activities, json_file)
+            save(activities)
             return
     raise RuntimeError("activity not found")
 
