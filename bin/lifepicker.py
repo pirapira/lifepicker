@@ -46,6 +46,25 @@ def pick(args):
         activities = json.load(json_file)
     activity = pick_activity(activities)
     print(activity)
+    print('do it for five minutes')
+    from time import sleep
+    sleep(300)
+    good_or_bad = input('g: it was good; b: it was bad> ')
+    if good_or_bad == 'g':
+        record("good", activity)
+    elif good_or_bad == 'b':
+        record("bad", activity)
+
+def record(label, activity):
+    with open(storage, encoding='utf-8') as json_file:
+        activities = json.load(json_file)
+    for entry in activities:
+        if(entry["name"] == activity):
+            entry[label] += 1
+            with open(storage, 'w', encoding='utf-8') as json_file:
+                json.dump(activities, json_file)
+            return
+    raise RuntimeError("activity not found")
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers()
