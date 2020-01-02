@@ -22,13 +22,17 @@ def add_element(original_list, activity):
 def add(args):
     print('add')
     new_activity = ' '.join(args.activity)
-    with open(storage, encoding='utf-8') as json_file:
-        current_list = json.load(json_file)
+    current_list = load()
     with open(storage, 'w', encoding='utf-8') as json_file:
         new_list = add_element(current_list, new_activity)
         json.dump(new_list, json_file)
 
 storage = Path.home() / Path('lifepicker.json')
+
+def load():
+    with open(storage, encoding='utf-8') as json_file:
+        return json.load(json_file)
+
 
 def pick_param(activity):
     from scipy.stats import beta
@@ -42,8 +46,7 @@ def pick_activity(activities):
 
 def pick(args):
     print('pick')
-    with open(storage, encoding='utf-8') as json_file:
-        activities = json.load(json_file)
+    activities = load()
     activity = pick_activity(activities)
     print(activity)
     print('do it for five minutes')
@@ -56,8 +59,7 @@ def pick(args):
         record("bad", activity)
 
 def record(label, activity):
-    with open(storage, encoding='utf-8') as json_file:
-        activities = json.load(json_file)
+    activities = load()
     for entry in activities:
         if(entry["name"] == activity):
             entry[label] += 1
