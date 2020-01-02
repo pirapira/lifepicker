@@ -30,9 +30,22 @@ def add(args):
 
 storage = Path.home() / Path('lifepicker.json')
 
+def pick_param(activity):
+    from scipy.stats import beta
+    return beta.rvs(activity["good"] + 1, activity["bad"] + 1)
+
+def pick_activity(activities):
+    params = map(pick_param, activities)
+    pairs = list(zip(params, activities))
+    pairs.sort(key=lambda pair: pair[0])
+    return pairs[-1][1]["name"]
+
 def pick(args):
     print('pick')
-    raise NotImplementedError
+    with open(storage, encoding='utf-8') as json_file:
+        activities = json.load(json_file)
+    activity = pick_activity(activities)
+    print(activity)
 
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers()
