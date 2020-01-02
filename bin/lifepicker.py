@@ -15,11 +15,22 @@ Commands
 
 import argparse
 
+def add():
+    print('add')
+    raise NotImplementedError
+
+def pick():
+    print('pick')
+    raise NotImplementedError
+
 parser = argparse.ArgumentParser()
 subparsers = parser.add_subparsers()
 
 add_parser = subparsers.add_parser('add')
+add_parser.set_defaults(func=add)
 pick_parser = subparsers.add_parser('pick')
+pick_parser.set_defaults(func=pick)
 
 if __name__ == '__main__':
     args = parser.parse_args()
+    args.func()
