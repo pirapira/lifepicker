@@ -22,6 +22,8 @@ def add_element(original_list, activity):
 def add(args):
     new_activity = ' '.join(args.activity)
     current_list = load()
+    if new_activity in map(lambda e: e["name"], current_list):
+        raise RuntimeError("duplicate entry")
     new_list = add_element(current_list, new_activity)
     save(new_list)
 
